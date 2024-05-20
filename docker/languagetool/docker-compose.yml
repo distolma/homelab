@@ -1,0 +1,26 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - 8011:8011
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/usr/local/etc/caddy/certs
+
+  languagetool:
+    build: ./
+    container_name: languagetool
+    restart: unless-stopped
+    ports:
+      - 8010:8010
+    # environment:
+      # - langtool_languageModel=/ngrams
+      # - langtool_fasttextBinary=/fasttext/fasttext/fasttext
+      # - langtool_fasttextModel=/fasttext/lid.176.bin
+      # - Java_Xms=1g
+      # - Java_Xmx=2g
+    volumes:
+      - ./ngrams:/ngrams:ro
+      # - ./fasttext:/fasttext

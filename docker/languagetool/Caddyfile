@@ -1,0 +1,4 @@
+localhost:8010 {
+  tls /usr/local/etc/caddy/certs/server.crt /usr/local/etc/caddy/certs/server.key
+  reverse_proxy languagetool:8010
+}
