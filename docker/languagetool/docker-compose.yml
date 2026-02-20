@@ -10,17 +10,23 @@ services:
       - ./certs:/usr/local/etc/caddy/certs
 
   languagetool:
-    build: ./
+    platform: linux/amd64
+    image: meyay/languagetool:latest
     container_name: languagetool
     restart: unless-stopped
-    ports:
-      - 8010:8010
-    # environment:
-      # - langtool_languageModel=/ngrams
-      # - langtool_fasttextBinary=/fasttext/fasttext/fasttext
-      # - langtool_fasttextModel=/fasttext/lid.176.bin
-      # - Java_Xms=1g
-      # - Java_Xmx=2g
+    user: "783:783"
+    read_only: true
+    tmpfs:
+      - /tmp:exec
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
+    expose:
+      - 8010
+    environment:
+      download_ngrams_for_langs: en
+      LISTEN_PORT: 8010
     volumes:
-      - ./ngrams:/ngrams:ro
-      # - ./fasttext:/fasttext
+      - ./ngrams:/ngrams
+      - ./fasttext:/fasttext
